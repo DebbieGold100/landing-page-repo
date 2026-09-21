@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spendly — Expense Tracker | Deborah Gold</title>
+    <meta
+      name="description"
+      content="A simple frontend expense tracking interface that organizes and displays financial records clearly. Built with HTML, CSS and JavaScript by Deborah Gold."
+    />
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237C3AED'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='bold' font-size='34' fill='white' text-anchor='middle'%3E%E2%82%A6%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <!-- ===== Ambient background glows ===== -->
+    <div class="bg-glows" aria-hidden="true">
+      <span class="glow glow-1"></span>
+      <span class="glow glow-2"></span>
+    </div>
+
+    <!-- ===== Top bar ===== -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a
+          class="back-link"
+          href="#"
+          onclick="
+            history.back();
+            return false;
+          "
+        >
+          <span class="icon">&larr;</span> Back
+        </a>
+        <div class="brand">
+          <span class="brand-logo">₦</span>
+          <span class="brand-text">
+            <strong>Spendly</strong>
+            <small>Expense Tracker</small>
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- ===== Intro ===== -->
+      <section class="intro">
+        <span class="pill">Live demo project</span>
+        <h1>Expense <span class="grad">Tracker</span></h1>
+        <p>
+          A simple frontend expense tracking interface that organizes and
+          displays financial records clearly. Add transactions, watch your
+          balance update, and see where your money goes. Your data is saved in
+          your browser.
+        </p>
+      </section>
+
+      <!-- ===== Summary cards ===== -->
+      <section class="summary" aria-label="Summary">
+        <div class="card summary-card balance-card">
+          <div class="card-head">
+            <span class="label">Total Balance</span>
+            <span class="chip chip-violet">💼</span>
+          </div>
+          <p class="amount" id="balanceValue">₦0</p>
+          <p class="sub" id="countValue">0 transactions recorded</p>
+        </div>
+
+        <div class="card summary-card">
+          <div class="card-head">
+            <span class="label muted">Income</span>
+            <span class="chip chip-green">▲</span>
+          </div>
+          <p class="amount green" id="incomeValue">₦0</p>
+          <p class="sub muted">Money coming in</p>
+        </div>
+
+        <div class="card summary-card">
+          <div class="card-head">
+            <span class="label muted">Expenses</span>
+            <span class="chip chip-red">▼</span>
+          </div>
+          <p class="amount red" id="expenseValue">₦0</p>
+          <p class="sub muted">Money going out</p>
+        </div>
+      </section>
+
+      <div class="grid">
+        <!-- ===== Left column ===== -->
+        <div class="col-left">
+          <!-- Add transaction -->
+          <section class="card" aria-label="Add transaction">
+            <h2 class="section-title">＋ Add Transaction</h2>
+            <form id="txnForm" novalidate>
+              <div class="toggle">
+                <button
+                  type="button"
+                  class="toggle-btn active"
+                  data-type="expense"
+                  id="btnExpense"
+                >
+                  ⬆ Expense
+                </button>
+                <button
+                  type="button"
+                  class="toggle-btn"
+                  data-type="income"
+                  id="btnIncome"
+                >
+                  ⬇ Income
+                </button>
+              </div>
+
+              <label for="title">Description</label>
+              <input
+                type="text"
+                id="title"
+                placeholder="e.g. Groceries, Salary…"
+              />
+
+              <div class="row">
+                <div>
+                  <label for="amount">Amount (₦)</label>
+                  <input
+                    type="number"
+                    id="amount"
+                    min="0"
+                    step="0.01"
+                    placeholder="0"
+                  />
+                </div>
+                <div>
+                  <label for="date">Date</label>
+                  <input type="date" id="date" />
+                </div>
+              </div>
+
+              <label for="category">Category</label>
+              <select id="category"></select>
+
+              <p class="error" id="formError" role="alert"></p>
+
+              <button type="submit" class="btn-primary">
+                ＋ Add Transaction
+              </button>
+            </form>
+          </section>
+
+          <!-- Breakdown -->
+          <section class="card" aria-label="Spending breakdown">
+            <h2 class="section-title">◑ Spending Breakdown</h2>
+            <div id="breakdownArea"></div>
+          </section>
+        </div>
+
+        <!-- ===== Right column: transactions ===== -->
+        <section class="card" aria-label="Transactions">
+          <div class="txn-head">
+            <h2 class="section-title no-margin">Transactions</h2>
+            <button type="button" class="btn-ghost" id="resetBtn">
+              Reset demo data
+            </button>
+          </div>
+
+          <div class="controls">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <input
+                type="search"
+                id="search"
+                placeholder="Search transactions…"
+                aria-label="Search transactions"
+              />
+            </div>
+            <div class="filter">
+              <button type="button" class="filter-btn active" data-filter="all">
+                All
+              </button>
+              <button type="button" class="filter-btn" data-filter="income">
+                Income
+              </button>
+              <button type="button" class="filter-btn" data-filter="expense">
+                Expense
+              </button>
+            </div>
+          </div>
+
+          <ul class="txn-list" id="txnList"></ul>
+        </section>
+      </div>
+
+      <p class="footer-note">
+        Built with HTML, CSS &amp; JavaScript · Featured project by Deborah Gold
+      </p>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
